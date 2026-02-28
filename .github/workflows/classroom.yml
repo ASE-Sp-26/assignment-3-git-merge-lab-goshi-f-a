@@ -13,22 +13,16 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      with:
-        fetch-depth: 0 # Ensures full history is available for merge verification
-
     - name: Verify Successful Merge
       id: verify-successful-merge
       uses: classroom-resources/autograding-command-grader@v1
       with:
         test-name: Verify Successful Merge
         setup-command: ''
-        # The >- symbol ensures the command is joined into a single line correctly
-        command: >-
-          git fetch origin feature-branch && 
-          git merge-base --is-ancestor origin/feature-branch HEAD
+        command: git fetch --unshallow origin feature-branch && git merge-base --is-ancestor
+          origin/feature-branch HEAD
         timeout: 2
         max-score: 10
-
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
       env:
